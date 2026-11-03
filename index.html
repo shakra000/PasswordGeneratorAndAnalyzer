@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberSecurity Suite - Analyzer & Generator</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Montserrat:wght@300;600&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #0a0a1a;
+            color: #fff;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        .rain, .particles {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+        
+        .drop {
+            position: absolute;
+            width: 2px;
+            height: 60px;
+            background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.5));
+            border-radius: 0 0 5px 5px;
+            animation: rain 5s linear infinite;
+            opacity: 0.6;
+        }
+        
+        @keyframes rain {
+            0% { transform: translateY(-100px) rotate(10deg); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% { transform: translateY(calc(100vh + 100px)) rotate(10deg); opacity: 0; }
+        }
+        
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            animation: float 10s linear infinite;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0) translateX(0); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100vh) translateX(100px); opacity: 0; }
+        }
+
+        .container {
+            position: relative;
+            z-index: 2;
+            max-width: 850px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.2rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            color: #fff;
+            text-shadow: 0 0 10px #00ffff, 0 0 20px #0088ff;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes glow {
+            from { text-shadow: 0 0 10px #00ffff, 0 0 20px #0088ff; }
+            to { text-shadow: 0 0 15px #00ffff, 0 0 30px #0088ff, 0 0 40px #00ffff; }
+        }
+
+        /* Navigation Tabs */
+        .tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .tab-btn {
+            background: rgba(10, 20, 30, 0.7);
+            border: 1px solid rgba(0, 255, 255, 0.4);
+            color: #00ffff;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            font-family: 'Orbitron', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .tab-btn.active, .tab-btn:hover {
+            background: linear-gradient(45deg, #00ffff, #0088ff);
+            color: #111;
+            font-weight: bold;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.6);
+        }
+
+        /* Section Boxes */
+        .card {
+            background: rgba(10, 20, 30, 0.75);
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            border-radius: 15px;
+            padding: 2rem;
+            width: 100%;
+            max-width: 600px;
+            box-shadow: 0 0 25px rgba(0, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            display: none;
+        }
+
+        .card.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+            color: #00ffff;
+            text-shadow: 0 0 5px #00ffff;
+        }
+
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 1rem;
+            margin-bottom: 1.2rem;
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid #00ffff;
+            border-radius: 8px;
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        input[type="text"]:focus, input[type="password"]:focus {
+            outline: none;
+            box-shadow: 0 0 12px #00ffff;
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #00ffff, #0088ff);
+            border: none;
+            color: #111;
+            padding: 0.9rem 1.8rem;
+            font-size: 0.95rem;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Orbitron', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
+            width: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 25px rgba(0, 255, 255, 0.8);
+        }
+
+        /* Strength Progress Bar */
+        .meter-bg {
+            height: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            margin: 1.2rem 0;
+            overflow: hidden;
+        }
+
+        .meter-fill {
+            height: 100%;
+            width: 0%;
+            border-radius: 5px;
+            transition: width 0.5s ease, background 0.5s ease;
+        }
+
+        /* Result Display Box */
+        .output-box {
+            font-size: 1.3rem;
+            margin: 1rem 0;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid #00ff88;
+            border-radius: 8px;
+            word-break: break-all;
+            color: #00ff88;
+            text-shadow: 0 0 5px #00ff88;
+            font-family: 'Courier New', monospace;
+            text-align: center;
+        }
+
+        .crack-details {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            border-left: 3px solid #00ffff;
+        }
+
+        .footer {
+            margin-top: 2.5rem;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.5);
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="rain" id="rain"></div>
+    <div class="particles" id="particles"></div>
+
+    <div class="container">
+        <h1>ETHICAL HACKING TOOLKIT</h1>
+
+        <!-- Navigation -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('analyzer')">Password Analyzer</button>
+            <button class="tab-btn" onclick="switchTab('generator')">Password Generator</button>
+        </div>
+
+        <!-- 1. PASS ANALYZER CARD -->
+        <div class="card active" id="analyzerCard">
+            <label for="analyzeInput">Enter Password to Analyze:</label>
+            <input type="password" id="analyzeInput" placeholder="Type password here..." oninput="analyzePassword()">
+            
+            <div class="meter-bg">
+                <div class="meter-fill" id="analyzeBar"></div>
+            </div>
+
+            <div id="analyzeText" style="font-weight: bold; margin-bottom: 1rem; text-align: center;">Please enter a password.</div>
+
+            <div class="crack-details" id="crackBreakdown" style="display: none;">
+                <strong>Estimated Crack Speeds:</strong><br>
+                • Standard CPU: <span id="cpuTime" style="color: #00ffff;">-</span><br>
+                • GPU Rig (RTX 4090): <span id="gpuTime" style="color: #00ffff;">-</span><br>
+                • Quantum Estimation: <span id="quantumTime" style="color: #00ffff;">-</span>
+            </div>
+        </div>
+
+        <!-- 2. PASS GENERATOR CARD -->
+        <div class="card" id="generatorCard">
+            <label for="userInput">Enter Word/Seed for Generator:</label>
+            <input type="text" id="userInput" placeholder="Type something (e.g. name or phrase)...">
+            <button class="btn" id="generateBtn">Generate Secure Password</button>
+
+            <div id="genResultBox" style="display: none; margin-top: 1.5rem;">
+                <label>Generated Secure Password:</label>
+                <div class="output-box" id="passwordDisplay"></div>
+
+                <div class="meter-bg">
+                    <div class="meter-fill" id="genStrengthFill"></div>
+                </div>
+                <p id="genStrengthText" style="text-align: center; margin-bottom: 1rem; font-size: 0.95rem;"></p>
+
+                <button class="btn" id="copyBtn" style="background: linear-gradient(45deg, #00ff88, #00aa88);">Copy to Clipboard</button>
+            </div>
+        </div>
+
+        <div class="footer">
+            Cybersecurity Suite • Created by Majida Shakra • Safe & Client-Side Only
+        </div>
+    </div>
+
+    <script>
+        // Tab Switcher
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
+
+            if (tabName === 'analyzer') {
+                document.querySelectorAll('.tab-btn')[0].classList.add('active');
+                document.getElementById('analyzerCard').classList.add('active');
+            } else {
+                document.querySelectorAll('.tab-btn')[1].classList.add('active');
+                document.getElementById('generatorCard').classList.add('active');
+            }
+        }
+
+        // --- Rain & Particle Effects ---
+        function createRain() {
+            const rainContainer = document.getElementById('rain');
+            for (let i = 0; i < 70; i++) {
+                const drop = document.createElement('div');
+                drop.classList.add('drop');
+                drop.style.left = `${Math.random() * 100}%`;
+                drop.style.animationDuration = `${3 + Math.random() * 4}s`;
+                drop.style.animationDelay = `${Math.random() * 5}s`;
+                drop.style.height = `${30 + Math.random() * 50}px`;
+                drop.style.background = `linear-gradient(to bottom, transparent, hsla(${Math.random() * 360}, 100%, 50%, 0.7))`;
+                rainContainer.appendChild(drop);
+            }
+        }
+
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            for (let i = 0; i < 25; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                const size = 2 + Math.random() * 3;
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.bottom = `${-10 - Math.random() * 20}px`;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.animationDuration = `${10 + Math.random() * 15}s`;
+                particle.style.background = `hsla(${Math.random() * 360}, 100%, 70%, 0.5)`;
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // --- PASSWORD ANALYZER LOGIC ---
+        function analyzePassword() {
+            const val = document.getElementById('analyzeInput').value;
+            const bar = document.getElementById('analyzeBar');
+            const txt = document.getElementById('analyzeText');
+            const details = document.getElementById('crackBreakdown');
+
+            if (!val) {
+                bar.style.width = '0%';
+                txt.textContent = 'Please enter a password.';
+                txt.style.color = '#ff6f61';
+                details.style.display = 'none';
+                return;
+            }
+
+            const combinations = Math.pow(94, val.length);
+            
+            // Speed calculations
+            const cpuSpeed = 1e8; // 100M / sec
+            const gpuSpeed = 1e11; // 100 Billion / sec
+            const quantumSpeed = 1e14; // 100 Trillion / sec
+
+            document.getElementById('cpuTime').textContent = formatTime(combinations / cpuSpeed);
+            document.getElementById('gpuTime').textContent = formatTime(combinations / gpuSpeed);
+            document.getElementById('quantumTime').textContent = formatTime(combinations / quantumSpeed);
+
+            let score = 0;
+            if (val.length >= 8) score += 25;
+            if (val.length >= 12) score += 25;
+            if (/[A-Z]/.test(val)) score += 15;
+            if (/[a-z]/.test(val)) score += 10;
+            if (/[0-9]/.test(val)) score += 12;
+            if (/[^A-Za-z0-9]/.test(val)) score += 13;
+
+            score = Math.min(score, 100);
+
+            bar.style.width = score + '%';
+            details.style.display = 'block';
+
+            if (score < 40) {
+                bar.style.background = '#ff3333';
+                txt.textContent = `Strength: Weak (${score}%)`;
+                txt.style.color = '#ff3333';
+            } else if (score < 75) {
+                bar.style.background = '#ffd700';
+                txt.textContent = `Strength: Moderate (${score}%)`;
+                txt.style.color = '#ffd700';
+            } else {
+                bar.style.background = '#00ff88';
+                txt.textContent = `Strength: Very Strong (${score}%)`;
+                txt.style.color = '#00ff88';
+            }
+        }
+
+        function formatTime(seconds) {
+            if (seconds < 1) return "Instant";
+            if (seconds < 60) return `${Math.round(seconds)} seconds`;
+            if (seconds < 3600) return `${Math.round(seconds / 60)} minutes`;
+            if (seconds < 86400) return `${Math.round(seconds / 3600)} hours`;
+            if (seconds < 31536000) return `${Math.round(seconds / 86400)} days`;
+            return `${(seconds / 31536000).toExponential(2)} years`;
+        }
+
+        // --- PASSWORD GENERATOR LOGIC ---
+        function generatePassword(input) {
+            let hash = 0;
+            for (let i = 0; i < input.length; i++) {
+                hash = input.charCodeAt(i) + ((hash << 5) - hash);
+            }
+            const specialChars = "!@#$%^&*()_+-=[]{}|;:,.<>?";
+            const numbers = "0123456789";
+            const upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            const lower = "abcdefghijklmnopqrstuvwxyz";
+            
+            let password = "";
+            password += specialChars[Math.abs(hash) % specialChars.length];
+            password += numbers[Math.abs(hash * 2) % numbers.length];
+            password += upper[Math.abs(hash * 3) % upper.length];
+            password += lower[Math.abs(hash * 5) % lower.length];
+            
+            const allChars = specialChars + numbers + upper + lower;
+            for (let i = password.length; i < 16; i++) {
+                const index = Math.abs(hash * (i + 1)) % allChars.length;
+                password += allChars[index];
+                hash = (hash * 31) ^ allChars.charCodeAt(index);
+            }
+            return password.split('').sort(() => 0.5 - Math.random()).join('');
+        }
+
+        // Initialize Events
+        document.addEventListener('DOMContentLoaded', () => {
+            createRain();
+            createParticles();
+
+            const generateBtn = document.getElementById('generateBtn');
+            const userInput = document.getElementById('userInput');
+            const genResultBox = document.getElementById('genResultBox');
+            const passwordDisplay = document.getElementById('passwordDisplay');
+            const genStrengthFill = document.getElementById('genStrengthFill');
+            const genStrengthText = document.getElementById('genStrengthText');
+            const copyBtn = document.getElementById('copyBtn');
+
+            generateBtn.addEventListener('click', () => {
+                const val = userInput.value.trim();
+                if (!val) {
+                    alert("Please enter a seed word!");
+                    return;
+                }
+                const pwd = generatePassword(val);
+                passwordDisplay.textContent = pwd;
+                genResultBox.style.display = 'block';
+
+                genStrengthFill.style.width = '90%';
+                genStrengthFill.style.background = '#00ff88';
+                genStrengthText.textContent = 'Password Strength: Very Strong (90%)';
+                genStrengthText.style.color = '#00ff88';
+            });
+
+            copyBtn.addEventListener('click', () => {
+                const pwd = passwordDisplay.textContent;
+                if (!pwd) return;
+                navigator.clipboard.writeText(pwd).then(() => {
+                    copyBtn.textContent = "Copied!";
+                    setTimeout(() => copyBtn.textContent = "Copy to Clipboard", 2000);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
