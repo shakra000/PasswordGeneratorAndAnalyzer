@@ -58,7 +58,6 @@ Interested in acquiring the full commercial license, custom security integration
 
 ## 🛒 Purchase & Contact
 
-* 📦 **Buy Full Source Code & Commercial License:** [Get it on Payhip](https://payhip.com/b/qbwhR)
 * ✉️ **Direct Inquiries:** [majidayehyashakra@gmail.com](mailto:majidayehyashakra@gmail.com)
 
 ---
