@@ -56,14 +56,16 @@ cd PasswordStrength
 
 Interested in acquiring the full commercial license, custom security integration, or collaborating on a project?
 
-Feel free to reach out directly via email:
-✉️ **[majidayehyashakra@gmail.com](https://www.google.com/search?q=mailto%3Amajidayehyashakra%40gmail.com)**
+## 🛒 Purchase & Contact
+
+* 📦 **Buy Full Source Code & Commercial License:** [Get it on Payhip](https://payhip.com/b/qbwhR)
+* ✉️ **Direct Inquiries:** [majidayehyashakra@gmail.com](mailto:majidayehyashakra@gmail.com)
 
 ---
 
 ## 👩‍💻 Author
 
-**Majida Shakra**
+Majida Shakra
 
 * **GitHub:** [@shakra000](https://github.com/shakra000)
 * **Specialization:** Financial Engineering, Data Analytics & Cybersecurity
